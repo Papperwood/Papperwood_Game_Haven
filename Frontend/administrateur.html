@@ -157,7 +157,6 @@
         </ul>
       </div>
     </nav>
-
     <main>
       <div class="container">
         <div class="row d-flex justify-content-center py-vh-5 pb-0">
@@ -174,7 +173,39 @@
           </div>
         </div>
     </main>
-          
+    <section>
+      <form id="product-form" class="add_product">
+        <h1>Add Products</h1>
+        <label for="product-name">Product Name</label>
+        <input type="text" id="product-name" name="product-name" required>
+
+        <label for="product-price">Price :</label>
+        <input type="number" id="product-price" name="product-price" step="0.01" required>
+
+        <label for="product-description">Description :</label>
+        <textarea id="product-description" name="product-description" rows="4" required></textarea>
+
+        <label for="product-image">Image :</label>
+        <input type="file" id="product-image" name="product-image" accept="image/*" required>
+
+        <label for="product-platform">Plateform :</label>
+        <select id="product-platform" name="product-platform" required>
+            <option value="">Sélect a plateform</option>
+            <option value="platform1">Playstation</option>
+            <option value="platform2">Xbox</option>
+            <option value="platform2">Switch</option>
+            <option value="platform2">Steam</option>           
+            <!-- Ajoutez d'autres options pour les plateformes ici -->
+        </select>
+        <select id="product-edition" name="product-edition" required>
+          <option value="">Sélect a Edition</option>
+          <option value="platform1">Standard</option>
+          <option value="platform2">collector</option>         
+          <!-- Ajoutez d'autres options pour les plateformes ici -->
+      </select>
+        <button type="submit">Ajouter le produit</button>
+    </form>
+    </section>
     <footer class="bg-black border-top border-dark">
       <div class="container py-vh-4 text-secondary fw-lighter">
         <div class="row">
