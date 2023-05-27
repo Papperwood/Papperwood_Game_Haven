@@ -6,8 +6,12 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // les condition pour mot de passe
-const verify_password = (mot_de_passe) => {
-  if (mot_de_passe.length < 8) { // minimum de 8 caractere
+const verify_password = (password) => {
+  if (!password) {
+    throw new Error("Password is not provided");
+  }
+  if (mot_de_passe.length < 8) {
+    // minimum de 8 caractere
     return false;
   }
 
@@ -19,36 +23,35 @@ const verify_password = (mot_de_passe) => {
   }
 
   const resultat = mot_de_passe.match(chiffres);
-  if (resultat === null || resultat.length < 2) { // minimum de 2 chiffres
+  if (resultat === null || resultat.length < 2) {
+    // minimum de 2 chiffres
     return false;
   }
 
   return true;
 };
 
-// La méthode exports.signup est le contrôleur qui gère la création d'un nouvel utilisateur.
 exports.signup = (req, res, next) => {
-  const { password, email } = req.body;
-  if (!verify_password(password)) { // verification si respect des regles ci dessus
+  const { email, password } = req.body;
+  if (!verify_password(password)) {
     return res.status(400).json({
       message:
-        "Le mot de passe doit contenir au moins 8 caractères, 1 majuscule et 2 chiffres.", // sinon message d'erreur
+        "Le mot de passe doit contenir au moins 8 caractères, 1 majuscule et 2 chiffres.",
     });
   }
   bcrypt
-    .hash(req.body.password, 10) // methode hash pour le password + le nombre 10 qui définie le nombre d'iteration
+    .hash(password, 10) // Ici, utilisez simplement `password` au lieu de `req.body.password`
     .then((hash) => {
       const user = new User({
-        // stockage de l'email et le password du client apres la méthode hash
-        email: req.body.email,
+        email, // Vous pouvez également utiliser simplement `email` ici car vous l'avez déjà extrait de `req.body`
         password: hash,
       });
       user
-        .save() // methode save pour enregistrer dans la base de données ce client
-        .then(() => res.status(201).json({ message: "Utilisateur créé !" })) // si ca a fonctionner alors message de validation
-        .catch((error) => res.status(400).json({ error })); // message si un utilisateur existe deja
+        .save()
+        .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
+        .catch((error) => res.status(400).json({ error }));
     })
-    .catch((error) => res.status(500).json({ error })); // message si ca ne fonctionne pas du tout
+    .catch((error) => res.status(500).json({ error }));
 };
 
 // La méthode exports.login est le contrôleur qui gère l'authentification d'un utilisateur deja dans la base de donnée existant.
